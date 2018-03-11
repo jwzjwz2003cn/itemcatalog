@@ -1,0 +1,14 @@
+<div class="col-sm-8">
+	<div class="row"><h3>Latest Items</h3></div>
+	  <div class="row">
+		<ul class="list-group">
+  		{% if latestItem !=[] %}	
+		{% for i in latestItems %}
+			<li class="list-group-item">
+				<a href='{{url_for('itemDetail', category_name=i.category.name, item_name = i.name ) }}'>{{i.name}}</a>
+			</li>
+		{% endfor %}
+	{% endif %}
+		</ul>	  		
+	</div>
+</div>

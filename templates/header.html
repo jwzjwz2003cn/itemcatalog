@@ -1,0 +1,157 @@
+<div class="jumbotron" style="background-color:#00F3FF">
+  <div class="container text-center">
+    <h1>Frank's Online Catalog</h1>      
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="{{url_for('catalogs')}}">Home</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+      {% if user_name %}
+      <li class="active"><a  href="{{url_for('addItem')}}">Add Item</a></li>
+      {%  endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {% if user_name %}
+            <b>{{user_name}}</b>
+            {% else %}
+            <b>Login</b> 
+            {%  endif %}
+          <span class="caret"></span></a>
+      <ul id="login-dp" class="dropdown-menu">
+        <li>
+          {% if user_name %}
+          <div class="row" id = "Signed-in" style="margin: 12px">
+              <div class="col-md-12" style="margin: 12px">
+                <h4>Hi, {{user_name}}!</h4>
+                <a>jwzjwz2003cn@gmail.com</a>
+                <!--a href="{{url_for('gdisconnect')}}">Sign out</a-->
+                <a id="signoutButton">Sign out</a>
+              </div>
+           </div>
+          {% else %}
+           <div class="row" id = "Sign-in">
+              <div class="col-md-12">
+                <div class="social-buttons" style="margin: 12px">
+                  <div id="signinButton"></div>
+                      <!--span class="g-signin"
+                            data-scope="openid email"
+                            data-clientid="335004036342-atiepe0b9chlpfquouudh9a7ncf3pj6g.apps.googleusercontent.com"
+                            data-redirecturi="postmessage"
+                            data-accesstype="offline"
+                            data-cookiepolicy="single_host_origin"
+                            data-onsuccess="signInCallback"
+                            data-approvalprompt="force">
+                      </span-->             
+                </div>
+              </div>
+           </div>
+          {%  endif %}
+        </li>
+      </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <script>
+    function renderButton() {
+      gapi.signin2.render('signinButton', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark'
+      });
+    }
+  </script>
+ <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+<script>
+  $('#signinButton').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+
+<script>
+  $('#signoutButton').click(function() {
+    // signInCallback defined in step 6.
+    signOutCallback()
+  });
+</script>
+
+
+<script>
+function signInCallback(authResult) {
+  console.log('signInCallback entry')
+  if (authResult['code']) {
+    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'POST',
+      url: '/gconnect?state={{STATE}}',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $(".flash ul").empty()
+          $(".flash ul").html('<li> <strong> Login Successful! ' + result + '</strong> </li>')
+         setTimeout(function() {
+          window.location.href = "/catalog";
+          $('#Sign-in').attr('style', 'display: none');
+          $('#Signed-in').attr('style', 'display: block');
+         }, 4000);
+          
+      } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+      
+  }); } }
+</script>
+
+<script>
+function signOutCallback() {
+  console.log('signOutCallback entry')
+    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'GET',
+      url: '/gdisconnect',
+      processData: false,
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+          $(".flash ul").empty()
+          $(".flash ul").html('<li> <strong> ' + result + ' Redirecting to homepage...</strong> </li>')
+         setTimeout(function() {
+          window.location.href = "/catalog";
+          $('#Sign-in').attr('style', 'display: block');
+          $('#Signed-in').attr('style', 'display: none');
+         }, 3000);
+      },
+      error: function(result) {
+          $(".flash ul").empty()
+          $(".flash ul").append('<li> <strong> ' + result + ' Redirecting to homepage...</strong> </li>')
+         setTimeout(function() {
+          window.location.href = "/catalog";
+          $('#Sign-in').attr('style', 'display: block');
+          $('#Signed-in').attr('style', 'display: none');
+         }, 3000);
+      }
+  }); }
+</script>

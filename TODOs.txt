@@ -1,0 +1,23 @@
+JSON API Endpoint for item code - done
+CRUD:Read - done
+CRUD: Create - done
+CRUD: Update - done
+CRUD: Delete - done
+Authentication & Authorization Done
+- Create, delete and update needs loging 
+- Third party login (google)
+- login and logout button
+Code Quality: Done
+Comments: Done 
+README: TODO
+
+Others:
+
+1. Button doesn't display nicely on firefox and IE                Done
+2. Cannot see user's from other username other than jwzjwz2003cn  Done
+3. Could add more items
+4. Limit the number of items in Latest Items                      Done
+5. Fix Login Detail (Now hard coded)                              Done
+6. Logout Redirect                                                Done
+7. Do not display category with 0 item                            Done
+8. Deliver the code to github

@@ -1,0 +1,14 @@
+<div class="col-sm-4">
+	<div class="row"><h3>Categories</h3></div>
+	<div class="row">
+		<ul class="list-group">
+  		{% if categoryList !=[] %}	
+		{% for c in categoryList %}
+			<li class="list-group-item">
+				<a href='{{url_for('category', category_name = c.name ) }}'>{{c.name}} </a>
+			</li>
+		{% endfor %}
+	{% endif %}
+		</ul>	  		
+	</div>
+</div>

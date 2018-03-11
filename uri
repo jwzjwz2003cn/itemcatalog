@@ -1,0 +1,14 @@
+http://localhost:8000/                                view all category and latest items
+http://localhost:8000/catalog/Snowboarding/items      view all items under category Snowboarding
+http://localhost:8000/catalog/Snowboarding/Snowboard  view single item under category Snowboarding
+
+
+Logged in
+
+http://localhost:8000/ 
+http://localhost:8000/catalog/Snowboarding/Snowboard   edit/delete
+http://localhost:8000/catalog/Snowboard/edit 
+http://localhost:8000/catalog/Snowboard/delete
+
+
+http://localhost:8000/catalog.json

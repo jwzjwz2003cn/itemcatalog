@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <title>Catalog App</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <meta name="google-signin-client_id" content="335004036342-atiepe0b9chlpfquouudh9a7ncf3pj6g.apps.googleusercontent.com">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+	<!-- Continuing the <head> section -->
+	  <script>
+	    function start() {
+	      gapi.load('auth2', function() {
+	        auth2 = gapi.auth2.init({
+	          client_id: '335004036342-atiepe0b9chlpfquouudh9a7ncf3pj6g.apps.googleusercontent.com',
+	          // Scopes to request in addition to 'profile' and 'email'
+	          //scope: 'additional_scope'
+	        });
+	      });
+	    }
+	  </script>
+	</head>
+	<body>
+		<div class="container">
+			{% block content %}
+			{% endblock content %}
+		</div>
+	</body>
+	<footer class="container-fluid text-center">
+	  <p>Online Store Copyright: Frank Ji 2018</p>  
+	</footer>
+</html>
