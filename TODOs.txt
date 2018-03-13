@@ -9,13 +9,13 @@ Authentication & Authorization Done
 - login and logout button
 Code Quality: Done
 Comments: Done 
-README: TODO
+README: DONE
 
 Others:
 
 1. Button doesn't display nicely on firefox and IE                Done
 2. Cannot see user's from other username other than jwzjwz2003cn  Done
-3. Could add more items
+3. Could add more items                                           Defer
 4. Limit the number of items in Latest Items                      Done
 5. Fix Login Detail (Now hard coded)                              Done
 6. Logout Redirect                                                Done
