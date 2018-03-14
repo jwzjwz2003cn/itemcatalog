@@ -27,6 +27,36 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+# Decorators
+
+def login_required(function):
+    # wraps(function)
+    def wrapper():
+        if 'username' not in login_session:
+            return redirect('/login')
+        else:
+            return function()
+    wrapper.func_name = function.func_name
+    return wrapper
+
+
+def creator_required(function):
+    # wraps(function)
+    def wrapper(item_name):
+        if 'username' not in login_session:
+            return redirect('/login')
+        item = session.query(Item).filter_by(name=item_name).one()
+        if item.user_id != login_session['user_id']:
+            return "<script>function myFunction()" \
+                   "{alert('You are not authorized to edit this item." \
+                   "Please create your own item in order to edit.');}" \
+                   "</script><body onload='myFunction()''>"
+        else:
+            return function(item_name)
+    wrapper.func_name = function.func_name
+    return wrapper
+
+
 # REST APIs
 @app.route('/')
 @app.route('/#')
@@ -82,6 +112,7 @@ def category(category_name):
 
 
 @app.route('/catalog/new/', methods=['GET', 'POST'])
+@login_required
 def addItem():
     """
     addItem()
@@ -91,8 +122,6 @@ def addItem():
     by a logged in user
 
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         if request.form['new_category']:
             category = Category(name=request.form['new_category'])
@@ -125,10 +154,12 @@ def addItem():
                         stmt,
                         Category.id == stmt.c.category_id).filter(
                         stmt.c.item_counts >= 0).order_by(Category.id)
-        return render_template('addItem.html', categoryList=categories)
+        return render_template('addItem.html', categoryList=categories,
+                               user_name=login_session['username'])
 
 
 @app.route('/catalog/<string:item_name>/edit', methods=['GET', 'POST'])
+@creator_required
 def editItem(item_name):
     """
     editItem()
@@ -138,14 +169,6 @@ def editItem(item_name):
 
     """
     editedItem = session.query(Item).filter_by(name=item_name).one()
-
-    if 'username' not in login_session:
-        return redirect('/login')
-    if editedItem.user_id != login_session['user_id']:
-        return "<script>function myFunction()" \
-               "{alert('You are not authorized to edit this item." \
-               "Please create your own item in order to edit.');}" \
-               "</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -184,6 +207,7 @@ def editItem(item_name):
 
 
 @app.route('/catalog/<string:item_name>/delete', methods=['GET', 'POST'])
+@creator_required
 def deleteItem(item_name):
     """
     deleteItem(item_name)
@@ -193,13 +217,6 @@ def deleteItem(item_name):
 
     """
     itemToDelete = session.query(Item).filter_by(name=item_name).one()
-    if 'username' not in login_session:
-        return redirect('/login')
-    if itemToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() " \
-               "{alert('You are not authorized to delete this item. " \
-               "Please create your own item in order to delete.');}"\
-               "</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
