@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
- 
-from database_setup import Category, Base, Item, User
+from database_setup import Base 
+from models.category import Category
+from models.item import Item
+from models.user import User
  
 engine = create_engine('sqlite:///catalog.db')
 # Bind the engine to the metadata of the Base class so that the
