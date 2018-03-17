@@ -5,7 +5,7 @@
   		{% if latestItem !=[] %}	
 		{% for i in latestItems %}
 			<li class="list-group-item">
-				<a href='{{url_for('itemDetail', category_name=i.category.name, item_name = i.name ) }}'>{{i.name}}</a>
+				<a href='{{url_for('catalog.itemDetail', category_name=i.category.name, item_name = i.name ) }}'>{{i.name}}</a>
 			</li>
 		{% endfor %}
 	{% endif %}

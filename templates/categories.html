@@ -5,7 +5,7 @@
   		{% if categoryList !=[] %}	
 		{% for c in categoryList %}
 			<li class="list-group-item">
-				<a href='{{url_for('category', category_name = c.name ) }}'>{{c.name}} </a>
+				<a href='{{url_for('catalog.category', category_name = c.name ) }}'>{{c.name}} </a>
 			</li>
 		{% endfor %}
 	{% endif %}

@@ -1,9 +1,8 @@
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-from models import *
 from user import User
+from models import Base
+
 
 class Item(Base):
     """

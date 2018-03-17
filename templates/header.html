@@ -12,12 +12,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="{{url_for('catalogs')}}">Home</a>
+      <a class="navbar-brand" href="{{url_for('catalog.catalogs')}}">Home</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
       {% if user_name %}
-      <li class="active"><a  href="{{url_for('addItem')}}">Add Item</a></li>
+      <li class="active"><a  href="{{url_for('catalog.addItem')}}">Add Item</a></li>
       {%  endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -36,7 +36,6 @@
               <div class="col-md-12" style="margin: 12px">
                 <h4>Hi, {{user_name}}!</h4>
                 <a>jwzjwz2003cn@gmail.com</a>
-                <!--a href="{{url_for('gdisconnect')}}">Sign out</a-->
                 <a id="signoutButton">Sign out</a>
               </div>
            </div>
