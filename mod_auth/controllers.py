@@ -1,17 +1,24 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, \
-    jsonify, Blueprint
+from flask import (Flask, 
+                   render_template, 
+                   request, 
+                   redirect, 
+                   url_for, 
+                   flash, 
+                   jsonify,
+                   Blueprint)
 from flask import session as login_session
 from flask import make_response
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
-from models.Item import Item, User
+from models.item import Item, User
 from mod_catalog import CLIENT_ID
 from mod_catalog import session
 import json
 import requests
 import httplib2
+import string
 import random
-# Define the blueprint: 'auth', set its url prefix: app.url/auth
+# Define the blueprint: 'auth'
 mod_auth = Blueprint('auth', __name__)
 
 

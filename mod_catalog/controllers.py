@@ -1,35 +1,43 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, \
-    jsonify, Blueprint
+from flask import (Flask, 
+                   render_template, 
+                   request, 
+                   redirect, 
+                   url_for, 
+                   flash, 
+                   jsonify,
+                   Blueprint)
 from flask import session as login_session
 from sqlalchemy.sql import func
 from sqlalchemy import asc, desc
 from mod_catalog import session
-from models.Item import Item, User
-from models.Category import Category
+from models.item import Item, User
+from models.category import Category
+from functools import wraps
 import mod_auth
 import requests
 import random
 import string
 import json
 
-# Define the blueprint: 'auth', set its url prefix: app.url/auth
+# Define the blueprint: 'catalog'
 mod_catalog = Blueprint('catalog', __name__)
 
 
 # Decorators
 def login_required(function):
-    # wraps(function)
-    def wrapper():
-        if 'username' not in login_session:
-            return redirect('/login')
-        else:
-            return function()
-    wrapper.func_name = function.func_name
-    return wrapper
+	@wraps(function)
+	def wrapper(*args, **kwargs):
+		if 'username' not in login_session:
+			return redirect('/login')
+		else:
+			r = function(*args, **kwargs)
+			return r
+	wrapper.func_name = function.func_name
+	return wrapper
 
 
 def creator_required(function):
-    # wraps(function)
+    @wraps(function)
     def wrapper(item_name):
         if 'username' not in login_session:
             return redirect('/login')
@@ -144,6 +152,7 @@ def addItem():
 
 
 @mod_catalog.route('/catalog/<string:item_name>/edit', methods=['GET', 'POST'])
+@login_required
 @creator_required
 def editItem(item_name):
     """
@@ -193,6 +202,7 @@ def editItem(item_name):
 
 @mod_catalog.route('/catalog/<string:item_name>/delete',
 				   methods=['GET', 'POST'])
+@login_required
 @creator_required
 def deleteItem(item_name):
     """
